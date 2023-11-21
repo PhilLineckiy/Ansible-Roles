@@ -1,0 +1,25 @@
+---
+- name: Add user and set password
+  hosts: "{{ your_target_hosts }}"
+  become: yes
+
+  vars:
+    ssh_public_key: "{{ lookup('file', '/home/'~ new_username ~'/id_rsa.pub') }}"
+
+  tasks:
+    - name: Add user
+      user:
+        name: "{{ new_username }}"
+        state: present
+        createhome: yes
+        shell: /bin/bash
+
+    - name: Set password for the new user
+      ansible.builtin.user:
+        name: "{{ new_username }}"
+        password: "{{ new_password | password_hash('sha512', 'mysecretsalt') }}"
+
+    - name: Restart SSH service
+      ansible.builtin.service:
+        name: sshd
+        state: restarted
