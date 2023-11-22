@@ -1,0 +1,4 @@
+---
+# defaults file for zabbix
+defaults:
+  zabbix_agent_version_debian: "6.0-4+debian11"
