@@ -9,9 +9,17 @@
     deb: "/tmp/zabbix-release_{{ defaults.zabbix_agent_version_debian }}.deb"
   when: ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu'
 
+- name: Add libssl1.1 repo
+  shell: echo "deb http://security.ubuntu.com/ubuntu focal-security main" | sudo tee /etc/apt/sources.list.d/focal-security.list
+
 - name: Update Apt Packages
   apt:
     update_cache: yes
+
+- name: Install libssl1.1
+  apt:
+    name: libssl1.1
+    state: present
 
 - name: Install Zabbix Agent
   apt:
