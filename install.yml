@@ -1,0 +1,20 @@
+---
+- name: Download Zabbix Release Package
+  get_url:
+    url: "https://repo.zabbix.com/zabbix/6.0/debian/pool/main/z/zabbix-release/zabbix-release_{{ defaults.zabbix_agent_version_debian }}_all.deb"
+    dest: "/tmp/zabbix-release_{{ defaults.zabbix_agent_version_debian }}.deb"
+
+- name: Install Zabbix Release Package
+  apt:
+    deb: "/tmp/zabbix-release_{{ defaults.zabbix_agent_version_debian }}.deb"
+  when: ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu'
+
+- name: Update Apt Packages
+  apt:
+    update_cache: yes
+
+- name: Install Zabbix Agent
+  apt:
+    name: zabbix-agent2
+    state: present
+  when: ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu'
