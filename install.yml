@@ -26,3 +26,8 @@
     name: zabbix-agent2
     state: present
   when: ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu'
+
+- name: Ensure Zabbix Agent is enabled
+  systemd:
+    name: zabbix-agent2
+    enabled: yes
